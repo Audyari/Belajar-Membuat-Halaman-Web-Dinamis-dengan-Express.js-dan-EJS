@@ -1,0 +1,63 @@
+Mengenal Templating
+
+=======================
+
+1. https://ejs.co/
+  Embedded JavaScript templating.
+
+
+catatan : untuk kill port yg berjalan 
+
+1. netstat -ano | findstr :3000
+2. taskkill /PID <PID> /F
+3. taskkill /PID 792 /F 
+
+==========================================
+
+buat 2 file index.js dan index.ejs untuk ejs taro di folder views :
+
+const express = require("express");
+const app = express();
+const port = 3000;
+const path = require("path");
+
+// Set view engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// Route handler
+app.get("/", (req, res) => {
+  res.render("index", {
+    title: "Halaman Utama",
+    message: "Selamat datang di halaman utama",
+  });
+});
+
+// Start server
+app.listen(port, () => {
+  console.log(`Server berjalan pada port ${port}`);
+});
+
+
+===============================
+
+index.ejs
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <h1>
+        <%= message %>
+    </h1>
+</body>
+
+</html>
+
+=================================
