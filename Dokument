@@ -1,6 +1,8 @@
-Konfigurasi Template Engine Ejs Di Express.Js
+Menggatur Posisi Folder Views Agar Tidak Error
 
 =======================
+
+Jika Anda ingin mengatur posisi folder "views" agar tidak menghasilkan kesalahan, Anda dapat menggunakan fungsi path dari modul path bawaan Node.js untuk memperoleh jalur yang benar.
 
 1. https://ejs.co/
   Embedded JavaScript templating.
