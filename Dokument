@@ -1,67 +1,158 @@
-Menggatur Posisi Folder Views Agar Tidak Error
+Mengenal Interpolation Syntax Ejs
 
-=======================
+===================================
 
-Jika Anda ingin mengatur posisi folder "views" agar tidak menghasilkan kesalahan, Anda dapat menggunakan fungsi path dari modul path bawaan Node.js untuk memperoleh jalur yang benar.
+kita bisa memasukkan kode javascrip ke EJS contoh nya : 
 
-1. https://ejs.co/
-  Embedded JavaScript templating.
+<h1>Halo, <%= nama.toUpperCase() %></h1>
 
+=============================================
 
-catatan : untuk kill port yg berjalan 
+TAG YG ada di EJS :
 
-1. netstat -ano | findstr :3000
-2. taskkill /PID <PID> /F
-3. taskkill /PID 792 /F 
+Tags
+<% 'Scriptlet' tag, for control-flow, no output
+<%_ ‘Whitespace Slurping’ Scriptlet tag, strips all whitespace before it
+<%= Outputs the value into the template (HTML escaped)
+<%- Outputs the unescaped value into the template
+<%# Comment tag, no execution, no output
+<%% Outputs a literal '<%'
+%> Plain ending tag
+-%> Trim-mode ('newline slurp') tag, trims following newline
+_%> ‘Whitespace Slurping’ ending tag, removes all whitespace after it
 
-==========================================
+=====================================
 
-buat 2 file index.js dan index.ejs untuk ejs taro di folder views :
+Contoh Penggunaan Buatlah 2 file index.js dan index.ejs :
+
+index.js :
 
 const express = require("express");
 const app = express();
 const port = 3000;
 const path = require("path");
 
-// Set view engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Route handler
 app.get("/", (req, res) => {
+  // Variables and data to be passed to the template
+  const nama = "Audyari W";
+  const angka1 = 5;
+  const angka2 = 3;
+  const user = {
+    name: "John",
+    email: "john@example.com",
+  };
+  const isLoggedIn = true;
+  const username = "ASEP";
+  const htmlContent = "<strong>This is some <em>HTML</em> content.</strong>";
+  const escapedValue = '<script>alert("XSS attack");</script>';
+  const condition = true;
+
+  // Render the "index.ejs" template and pass the variables and data
   res.render("index", {
-    title: "Halaman Utama",
-    message: "Selamat datang di halaman utama",
+    nama,
+    angka1,
+    angka2,
+    user,
+    isLoggedIn,
+    username,
+    htmlContent,
+    escapedValue,
+    condition,
   });
 });
 
-// Start server
 app.listen(port, () => {
   console.log(`Server berjalan pada port ${port}`);
 });
 
 
-===============================
+===================================================
 
-index.ejs
+index.ejs :
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>
-        <%= title %>
-    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 
 <body>
-    <h1>
-        <%= message %>
-    </h1>
 
-============================
+    <h1>Halo, <%= nama %>
+    </h1>
+    <p>Jumlah: <%= angka1 + angka2 %>
+    </p>
+    <p>Nama: <%= user.name %>
+    </p>
+    <p>Email: <%= user.email %>
+    </p>
+
+    <div>
+
+        <% if (isLoggedIn) { %>
+            <p>Selamat datang, <%= username %>
+            </p>
+            <% } else { %>
+                <p>Silakan login terlebih dahulu</p>
+                <% } %>
+
+    </div>
+
+    <div>
+
+        <ul>
+            <% for (let i=1; i <=5; i++) { %>
+                <li>Item <%= i %>
+                </li>
+                <% } %>
+        </ul>
+
+
+        <%# This is a comment, it will not be executed or displayed in the view. %>
+
+            <p>HTML Content:</p>
+            <%- htmlContent %>
+
+                <p>Escaped Value:</p>
+                <%= escapedValue %>
+
+                    <br>
+
+                    &lt;% This will output literal '&lt;%'
+
+                    <% if (condition) { %>
+                        <h1>Welcome!</h1>
+                        <% } else { %>
+                            <h1>Goodbye!</h1>
+                            <% } %>
+
+                                <p>This paragraph will have no whitespace before it.</p>
+
+                                <p>This paragraph will have no whitespace after it.</p>
+
+    </div>
+
+
+
+
 </body>
 
 </html>
 
-=================================
+=======================================================================================
+
+<%_ ... %> adalah tag "Scriptlet" yang digunakan untuk kontrol alur tanpa output. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk melakukan perulangan dan menghasilkan beberapa elemen daftar <li>.
+<%# ... %> adalah tag komentar yang tidak akan dieksekusi atau ditampilkan di tampilan.
+<%- ... %> adalah tag yang digunakan untuk mengeluarkan nilai tanpa melarikan HTML. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk mengeluarkan nilai dari variabel htmlContent.
+<%= ... %> adalah tag yang digunakan untuk mengeluarkan nilai ke tampilan dengan melarikan HTML. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk mengeluarkan nilai dari variabel escapedValue.
+<%% adalah tag yang menghasilkan teks literal <%.
+<% ... %> adalah tag yang digunakan untuk kontrol alur seperti percabangan if-else. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk mengevaluasi kondisi dan menampilkan teks yang sesuai di tampilan.
+<%_ -%> adalah tag yang digunakan untuk menghilangkan spasi putih sebelum atau sesudahnya. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk menghilangkan spasi putih sebelum dan sesudah paragraf yang berikutnya.
+
+============================================
