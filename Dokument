@@ -1,61 +1,86 @@
-Membuat Static Folder Untuk Assets Web
+Implementasi Bootstrap Css Dengan Express.Js
 
-============================================
-Folder static (atau disebut juga sebagai public folder atau assets folder) adalah sebuah direktori di server
-yang digunakan untuk menyimpan aset web statis seperti gambar, file CSS, file JavaScript, dan file lainnya yang
-diperlukan oleh halaman web.
+===================================================
 
-=============
+catatan ini bootstap nya install manual di masukkan ke folder public :(
 
-simple code :
+1. masuk ke web bootstrap dan donload 
+  Compiled CSS and JS 
 
-index.js :
+2. masukkan ke folder publick
+3. terus buat index.js
 
 const express = require("express");
 const app = express();
+const path = require("path");
 
-// Menentukan folder statis
-app.use(express.static("public"));
+// Mengatur folder statis
+app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  "/bootstrap",
+  express.static(path.join(__dirname, "node_modules/bootstrap/dist"))
+);
 
-// Set mesin template EJS
+// Mengatur folder views
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// Menangani permintaan GET ke rute utama '/'
+// Rute utama
 app.get("/", (req, res) => {
   res.render("index");
 });
 
 // Menjalankan server pada port 3000
-app.listen(3000, () => {
+// app.listen(3000, () => {
+//   console.log("Server berjalan pada port 3000");
+// });
+
+// Menjalankan server pada port 3000
+app.listen(3000, "172.23.16.150", () => {
   console.log("Server berjalan pada port 3000");
 });
 
 
-=================================
+===================================================
 
-2. jangan lupa buat foler public dan masukkan simple data misal gambar.jpg
-
-===============================
-
-index.ejs :
+Buat index.ejs :
 
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
-    <title>Contoh Halaman</title>
-    <link rel="stylesheet" href="/styles.css">
+    <title>Contoh Halaman dengan Bootstrap dan Express.js</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 
 <body>
-    <h1>Selamat Datang!</h1>
-    <img src="/Logo.jpg" alt="Logo">
-    <script src="/script.js"></script>
+    <div class="container">
+        <h1>Selamat Datang!</h1>
+
+        <div class="alert alert-primary" role="alert">
+            Ini adalah contoh penggunaan Bootstrap dalam aplikasi Express.js.
+        </div>
+
+        <p>Selamat datang di halaman ini!</p>
+    </div>
+
+    <script src="/js/bootstrap.min.js"></script>
 </body>
 
 </html>
 
-============================================
 
 
+
+======================================
+
+catatan : untuk kill port yg berjalan 
+
+1. netstat -ano | findstr :3000
+2. taskkill /PID <PID> /F
+3. taskkill /PID 792 /F 
+
+
+
+=====================================
