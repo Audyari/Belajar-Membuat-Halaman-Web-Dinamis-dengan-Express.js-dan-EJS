@@ -1,10 +1,10 @@
-Demo Passing Data Mirip Halaman Tag Dev.To
+Cara Menggunakan If Di Dalam Ejs
 
-===============================
+==========================
 
-contoh code nya :
+contoh code : 
 
-index.js :
+index.js 
 
 const express = require("express");
 const app = express();
@@ -12,46 +12,31 @@ const app = express();
 // Set mesin template EJS
 app.set("view engine", "ejs");
 
-// Data posting yang menyerupai halaman tag di DEV Community
-const tagPosts = [
+// Data posting yang menyerupai halaman utama
+const posts = [
   {
-    tag: "webdev",
-    title:
-      "The Ultimate Guide to Styling with CSS-in-JS Using Styled Components",
-    author: "Vinyl-Davyl",
+    title: "Post 1",
+    author: "John Doe",
     date: "May 13",
-    reactions: 18,
-    comments: 2,
-    readTime: 7,
+    reactions: 60,
   },
   {
-    tag: "ai",
-    title: "AI & Kubernetes",
-    author: "Kaslin Fields",
-    date: "May 13",
-    reactions: 50,
-    comments: 0,
-    readTime: 6,
+    title: "Post 2",
+    author: "Jane Smith",
+    date: "May 14",
+    reactions: 25,
   },
   {
-    tag: "opensource",
-    title: "Maintainer Monday",
-    author: "BekahHW",
-    date: "May 13",
-    reactions: 8,
-    comments: 0,
-    readTime: 2,
+    title: "Post 3",
+    author: "Bob Johnson",
+    date: "May 15",
+    reactions: 10,
   },
 ];
 
-// Menangani permintaan GET ke rute '/tag/:tagName' (misalnya '/tag/webdev')
-app.get("/tag/:tagName", (req, res) => {
-  const tagName = req.params.tagName;
-
-  // Filter data posting berdasarkan tag yang cocok
-  const filteredPosts = tagPosts.filter((post) => post.tag === tagName);
-
-  res.render("index", { tagName, posts: filteredPosts });
+// Menangani permintaan GET ke rute utama '/'
+app.get("/", (req, res) => {
+  res.render("index", { posts });
 });
 
 // Menjalankan server pada port 3000
@@ -60,42 +45,96 @@ app.listen(3000, () => {
 });
 
 
-
-================================
+==============================================
 
 index.ejs :
 
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Tag <%= tagName %>
-    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 
 <body>
-    <h1>Tag <%= tagName %>
-    </h1>
-    <ul>
-        <% posts.forEach(post=> { %>
-            <li>
-                <h2>
-                    <%= post.title %>
-                </h2>
-                <p>By <%= post.author %> on <%= post.date %>
-                </p>
-                <p>Reactions: <%= post.reactions %>
-                </p>
-                <p>Comments: <%= post.comments %>
-                </p>
-                <p>Read Time: <%= post.readTime %> min</p>
-            </li>
-            <% }) %>
-    </ul>
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Halaman Utama</title>
+    </head>
+    <!-- 
+    <div>
+        <h1>Selamat Datang di Halaman Utama!</h1>
+        <ul>
+            <% posts.forEach(post=> { %>
+                <li>
+                    <h2>
+                        <%= post.title %>
+                    </h2>
+                    <p>
+                        <%= post.content %>
+                    </p>
+                </li>
+                <% }) %>
+        </ul>
+
+    </div> -->
+    <!-- 
+    <div>
+        <ul>
+            <% posts.forEach(post=> { %>
+                <li>
+                    <h2>
+                        <%= post.title %>
+                    </h2>
+                    <p>By <%= post.author %> on <%= post.date %>
+                    </p>
+                    <% if (post.reactions> 10) { %>
+                        <p>This post is popular!</p>
+                        <% } else { %>
+                            <p>This post has fewer reactions.</p>
+                            <% } %>
+                </li>
+                <% }) %>
+        </ul>
+    </div> -->
+
+    <div>
+
+        <h1>Selamat Datang di Halaman Utama!</h1>
+        <ul>
+            <% posts.forEach(post=> { %>
+                <li>
+                    <h2>
+                        <%= post.title %>
+                    </h2>
+                    <p>By <%= post.author %> on <%= post.date %>
+                    </p>
+                    <% if (post.reactions> 50) { %>
+                        <p>This post is very popular!</p>
+                        <% } else if (post.reactions> 20) { %>
+                            <p>This post is popular!</p>
+                            <% } else { %>
+                                <p>This post has fewer reactions.</p>
+                                <% } %>
+                </li>
+                <% }) %>
+        </ul>
+
+
+    </div>
+
+</body>
+
+</html>
 </body>
 
 </html>
 
 
-=========================================
+=======================================================
