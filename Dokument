@@ -1,40 +1,67 @@
-Passing Data Ke Template
+Demo Passing Data Mirip Halaman Tag Dev.To
 
-==============================
+===============================
 
-proses mengirimkan data dari aplikasi atau server ke template untuk kemudian ditampilkan kepada pengguna. :
-
-contoh kode :
+contoh code nya :
 
 index.js :
 
-const ejs = require("ejs");
-const fs = require("fs");
-const path = require("path");
+const express = require("express");
+const app = express();
 
-// Data yang akan dilewatkan ke template
-const data = {
-  nama: "John Doe",
-  umur: 25,
-  pekerjaan: "Developer",
-};
+// Set mesin template EJS
+app.set("view engine", "ejs");
 
-// Mendapatkan jalur lengkap ke file template
-const templatePath = path.join(__dirname, "views", "index.ejs");
+// Data posting yang menyerupai halaman tag di DEV Community
+const tagPosts = [
+  {
+    tag: "webdev",
+    title:
+      "The Ultimate Guide to Styling with CSS-in-JS Using Styled Components",
+    author: "Vinyl-Davyl",
+    date: "May 13",
+    reactions: 18,
+    comments: 2,
+    readTime: 7,
+  },
+  {
+    tag: "ai",
+    title: "AI & Kubernetes",
+    author: "Kaslin Fields",
+    date: "May 13",
+    reactions: 50,
+    comments: 0,
+    readTime: 6,
+  },
+  {
+    tag: "opensource",
+    title: "Maintainer Monday",
+    author: "BekahHW",
+    date: "May 13",
+    reactions: 8,
+    comments: 0,
+    readTime: 2,
+  },
+];
 
-// Baca file template EJS
-const template = fs.readFileSync(templatePath, "utf8");
+// Menangani permintaan GET ke rute '/tag/:tagName' (misalnya '/tag/webdev')
+app.get("/tag/:tagName", (req, res) => {
+  const tagName = req.params.tagName;
 
-// Render template dengan data
-const render
+  // Filter data posting berdasarkan tag yang cocok
+  const filteredPosts = tagPosts.filter((post) => post.tag === tagName);
 
-simple code rando(template, data);
+  res.render("index", { tagName, posts: filteredPosts });
+});
 
-// Tampilkan hasil render
-console.log(renderedTemplate);
+// Menjalankan server pada port 3000
+app.listen(3000, () => {
+  console.log("Server berjalan pada port 3000");
+});
 
 
-=================================
+
+================================
 
 index.ejs :
 
@@ -42,73 +69,33 @@ index.ejs :
 <html>
 
 <head>
-    <title>Contoh Template EJS</title>
+    <meta charset="utf-8">
+    <title>Tag <%= tagName %>
+    </title>
 </head>
 
 <body>
-    <h1>Halo, <%= nama %>
+    <h1>Tag <%= tagName %>
     </h1>
-    <p>Umur: <%= umur %> tahun</p>
-    <p>Pekerjaan: <%= pekerjaan %>
-    </p>
+    <ul>
+        <% posts.forEach(post=> { %>
+            <li>
+                <h2>
+                    <%= post.title %>
+                </h2>
+                <p>By <%= post.author %> on <%= post.date %>
+                </p>
+                <p>Reactions: <%= post.reactions %>
+                </p>
+                <p>Comments: <%= post.comments %>
+                </p>
+                <p>Read Time: <%= post.readTime %> min</p>
+            </li>
+            <% }) %>
+    </ul>
 </body>
 
 </html>
 
 
-==============================
-
-simpel rendom app codidpolitan : 
-
-index.js :
-
-const express = require("express");
-const app = express();
-const ejs = require("ejs");
-
-// Set view engine
-app.set("view engine", "ejs");
-
-// Route untuk halaman utama
-app.get("/", (req, res) => {
-  // Generate random number
-  const num = Math.floor(Math.random() * 10) + 1;
-
-  // Render template dengan data
-  res.render("rendom", { num: num });
-});
-
-// Server listening
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
-});
-
-
-============================
-
-random.ejs
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <h1>Random number: <%= num %>
-    </h1>
-    <% if(num % 2===0) { %>
-        <h3>Angka Genap</h3>
-        <% } else { %>
-            <h3>Angka Ganjil</h3>
-            <%} %>
-
-</body>
-
-</html>
-
-
-===============================
+=========================================
