@@ -1,14 +1,14 @@
-Implementasi Bootstrap Css Dengan Express.Js
+Layouting Dengan Ejs Di Express.Js
 
-===================================================
+======================================
 
-catatan ini bootstap nya install manual di masukkan ke folder public :(
+Menggunakkan Includes : 
 
-1. masuk ke web bootstrap dan donload 
-  Compiled CSS and JS 
+ <%- include('header') %>
 
-2. masukkan ke folder publick
-3. terus buat index.js
+===============================
+
+Buat Index.js 
 
 const express = require("express");
 const app = express();
@@ -31,19 +31,21 @@ app.get("/", (req, res) => {
 });
 
 // Menjalankan server pada port 3000
-// app.listen(3000, () => {
-//   console.log("Server berjalan pada port 3000");
-// });
-
-// Menjalankan server pada port 3000
-app.listen(3000, "172.23.16.150", () => {
+app.listen(3000, () => {
   console.log("Server berjalan pada port 3000");
 });
 
+// Menjalankan server pada port 3000
+// app.listen(3000, "172.23.16.150", () => {
+//   console.log("Server berjalan pada port 3000");
+// });
 
-===================================================
 
-Buat index.ejs :
+=========================================
+
+buat 3 file ejs index.ejs, header.ejs dan footer.ejs :
+
+index.ejs : 
 
 <!DOCTYPE html>
 <html>
@@ -65,22 +67,41 @@ Buat index.ejs :
         <p>Selamat datang di halaman ini!</p>
     </div>
 
+    <div class="container">
+        <%- include('header') %>
+
+            <h2>Content</h2>
+            <p>This is the main content of the page.</p>
+
+            <%- include('footer') %>
+    </div>
+
     <script src="/js/bootstrap.min.js"></script>
 </body>
 
 </html>
 
+========================
+
+header.ejs :
+
+<header>
+    <h1>Header</h1>
+</header>
+
+=========================
+
+footer.ejs  :
+
+
+<footer>
+
+    <div class="alert alert-primary" role="alert">
+        <p>Footer</p>
+    </div>
+</footer>
+
+================================
 
 
 
-======================================
-
-catatan : untuk kill port yg berjalan 
-
-1. netstat -ano | findstr :3000
-2. taskkill /PID <PID> /F
-3. taskkill /PID 792 /F 
-
-
-
-=====================================
