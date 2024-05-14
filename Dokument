@@ -1,75 +1,28 @@
-Latihan Menampilkan Data Dari Query Ke Template Ejs
+Membuat Static Folder Untuk Assets Web
 
-======================================================
+============================================
+Folder static (atau disebut juga sebagai public folder atau assets folder) adalah sebuah direktori di server
+yang digunakan untuk menyimpan aset web statis seperti gambar, file CSS, file JavaScript, dan file lainnya yang
+diperlukan oleh halaman web.
 
-buat data.json :
+=============
 
-{
-  "javascript": {
-    "title": "JavaScript",
-    "followers": 9999,
-    "description": "Once relegated to the browser as one of the 3 core technologies of the web, JavaScript can now be found almost anywhere you find code. JavaScript developers move fast and push software development forward; they can be as opinionated as the frameworks they use, so let's keep it clean here and make it a place to learn from each other!",
-    "img": "https://res.cloudinary.com/practicaldev/image/fetch/s--e4kQ9nis--/c_limit,f_auto,fl_progressive,q_80,w_64/https://dev-to-uploads.s3.amazonaws.com/uploads/badge/badge_image/16/js-badge.png",
-    "posts": [
-      {
-        "title": "Mastering JavaScript in 100 Days: A Structured Plan for Proficiency",
-        "author": "Abishek Haththakage"
-      },
-      {
-        "title": "A Beginner's Guide to Creating a RESTful API with Node.js",
-        "author": "Abishek Haththakage"
-      }
-    ]
-  },
-  "react": {
-    "title": "React.js",
-    "followers": 1200,
-    "description": "Official tag for Facebook's React JavaScript library for building user interfaces.",
-    "img": "https://res.cloudinary.com/practicaldev/image/fetch/s--1hWNUxma--/c_limit,f_auto,fl_progressive,q_80,w_64/https://dev-to-uploads.s3.amazonaws.com/uploads/badge/badge_image/26/react-sticker.png",
-    "posts": [
-      {
-        "title": "What is Strict Mode in React?",
-        "author": "Code of Relevancy"
-      },
-      {
-        "title": "Build AI Template Engine to create amazing content with Next.js and ChatGPT",
-        "author": "Yuval"
-      }
-    ]
-  },
-  "node": {
-    "title": "Node.js",
-    "followers": 4500,
-    "description": "A JavaScript runtime built on Chrome's V8 JavaScript engine.",
-    "posts": [
-      {
-        "title": "A Beginner's Guide to Creating a RESTful API with Node.js",
-        "author": "Abishek Haththakage"
-      },
-      {
-        "title": "Functional Programming Made Easy with TypeScript",
-        "author": "Francisco Mendes"
-      }
-    ]
-  }
-}
+simple code :
 
-
-================================
-
-index.js : 
+index.js :
 
 const express = require("express");
 const app = express();
-const data = require("./data.json");
+
+// Menentukan folder statis
+app.use(express.static("public"));
 
 // Set mesin template EJS
 app.set("view engine", "ejs");
 
 // Menangani permintaan GET ke rute utama '/'
 app.get("/", (req, res) => {
-  res.render("index", { data });
-  console.log(data); //menampilkan data json
+  res.render("index");
 });
 
 // Menjalankan server pada port 3000
@@ -78,7 +31,11 @@ app.listen(3000, () => {
 });
 
 
-=======================================================
+=================================
+
+2. jangan lupa buat foler public dan masukkan simple data misal gambar.jpg
+
+===============================
 
 index.ejs :
 
@@ -87,45 +44,18 @@ index.ejs :
 
 <head>
     <meta charset="utf-8">
-    <title>Data Tags</title>
+    <title>Contoh Halaman</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-    <h1>Data Tags</h1>
-
-    <ul>
-        <% Object.entries(data).forEach(([tag, info])=> { %>
-            <li>
-                <h2>
-                    <%= info.title %>
-                </h2>
-                <p>Followers: <%= info.followers %>
-                </p>
-                <p>
-                    <%= info.description %>
-                </p>
-                <% if (info.img) { %>
-                    <img src="<%= info.img %>" alt="<%= info.title %>">
-                    <% } %>
-
-                        <h3>Posts:</h3>
-                        <ul>
-                            <% info.posts.forEach(post=> { %>
-                                <li>
-                                    <h4>
-                                        <%= post.title %>
-                                    </h4>
-                                    <p>Author: <%= post.author %>
-                                    </p>
-                                </li>
-                                <% }) %>
-                        </ul>
-            </li>
-            <% }) %>
-    </ul>
+    <h1>Selamat Datang!</h1>
+    <img src="/Logo.jpg" alt="Logo">
+    <script src="/script.js"></script>
 </body>
 
 </html>
 
+============================================
 
-======================================
+
