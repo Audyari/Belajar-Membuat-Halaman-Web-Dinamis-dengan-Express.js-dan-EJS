@@ -1,77 +1,92 @@
-Mengenal Interpolation Syntax Ejs
+Passing Data Ke Template
 
-===================================
+==============================
 
-kita bisa memasukkan kode javascrip ke EJS contoh nya : 
+proses mengirimkan data dari aplikasi atau server ke template untuk kemudian ditampilkan kepada pengguna. :
 
-<h1>Halo, <%= nama.toUpperCase() %></h1>
+contoh kode :
 
-=============================================
+index.js :
 
-TAG YG ada di EJS :
+const ejs = require("ejs");
+const fs = require("fs");
+const path = require("path");
 
-Tags
-<% 'Scriptlet' tag, for control-flow, no output
-<%_ ‘Whitespace Slurping’ Scriptlet tag, strips all whitespace before it
-<%= Outputs the value into the template (HTML escaped)
-<%- Outputs the unescaped value into the template
-<%# Comment tag, no execution, no output
-<%% Outputs a literal '<%'
-%> Plain ending tag
--%> Trim-mode ('newline slurp') tag, trims following newline
-_%> ‘Whitespace Slurping’ ending tag, removes all whitespace after it
+// Data yang akan dilewatkan ke template
+const data = {
+  nama: "John Doe",
+  umur: 25,
+  pekerjaan: "Developer",
+};
 
-=====================================
+// Mendapatkan jalur lengkap ke file template
+const templatePath = path.join(__dirname, "views", "index.ejs");
 
-Contoh Penggunaan Buatlah 2 file index.js dan index.ejs :
+// Baca file template EJS
+const template = fs.readFileSync(templatePath, "utf8");
+
+// Render template dengan data
+const render
+
+simple code rando(template, data);
+
+// Tampilkan hasil render
+console.log(renderedTemplate);
+
+
+=================================
+
+index.ejs :
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Contoh Template EJS</title>
+</head>
+
+<body>
+    <h1>Halo, <%= nama %>
+    </h1>
+    <p>Umur: <%= umur %> tahun</p>
+    <p>Pekerjaan: <%= pekerjaan %>
+    </p>
+</body>
+
+</html>
+
+
+==============================
+
+simpel rendom app codidpolitan : 
 
 index.js :
 
 const express = require("express");
 const app = express();
-const port = 3000;
-const path = require("path");
+const ejs = require("ejs");
 
+// Set view engine
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
 
+// Route untuk halaman utama
 app.get("/", (req, res) => {
-  // Variables and data to be passed to the template
-  const nama = "Audyari W";
-  const angka1 = 5;
-  const angka2 = 3;
-  const user = {
-    name: "John",
-    email: "john@example.com",
-  };
-  const isLoggedIn = true;
-  const username = "ASEP";
-  const htmlContent = "<strong>This is some <em>HTML</em> content.</strong>";
-  const escapedValue = '<script>alert("XSS attack");</script>';
-  const condition = true;
+  // Generate random number
+  const num = Math.floor(Math.random() * 10) + 1;
 
-  // Render the "index.ejs" template and pass the variables and data
-  res.render("index", {
-    nama,
-    angka1,
-    angka2,
-    user,
-    isLoggedIn,
-    username,
-    htmlContent,
-    escapedValue,
-    condition,
-  });
+  // Render template dengan data
+  res.render("rendom", { num: num });
 });
 
-app.listen(port, () => {
-  console.log(`Server berjalan pada port ${port}`);
+// Server listening
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
 });
 
 
-===================================================
+============================
 
-index.ejs :
+random.ejs
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,76 +98,17 @@ index.ejs :
 </head>
 
 <body>
-
-    <h1>Halo, <%= nama %>
+    <h1>Random number: <%= num %>
     </h1>
-    <p>Jumlah: <%= angka1 + angka2 %>
-    </p>
-    <p>Nama: <%= user.name %>
-    </p>
-    <p>Email: <%= user.email %>
-    </p>
-
-    <div>
-
-        <% if (isLoggedIn) { %>
-            <p>Selamat datang, <%= username %>
-            </p>
-            <% } else { %>
-                <p>Silakan login terlebih dahulu</p>
-                <% } %>
-
-    </div>
-
-    <div>
-
-        <ul>
-            <% for (let i=1; i <=5; i++) { %>
-                <li>Item <%= i %>
-                </li>
-                <% } %>
-        </ul>
-
-
-        <%# This is a comment, it will not be executed or displayed in the view. %>
-
-            <p>HTML Content:</p>
-            <%- htmlContent %>
-
-                <p>Escaped Value:</p>
-                <%= escapedValue %>
-
-                    <br>
-
-                    &lt;% This will output literal '&lt;%'
-
-                    <% if (condition) { %>
-                        <h1>Welcome!</h1>
-                        <% } else { %>
-                            <h1>Goodbye!</h1>
-                            <% } %>
-
-                                <p>This paragraph will have no whitespace before it.</p>
-
-                                <p>This paragraph will have no whitespace after it.</p>
-
-    </div>
-
-
-
+    <% if(num % 2===0) { %>
+        <h3>Angka Genap</h3>
+        <% } else { %>
+            <h3>Angka Ganjil</h3>
+            <%} %>
 
 </body>
 
 </html>
 
-=======================================================================================
 
-<%_ ... %> adalah tag "Scriptlet" yang digunakan untuk kontrol alur tanpa output. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk melakukan perulangan dan menghasilkan beberapa elemen daftar <li>.
-<%# ... %> adalah tag komentar yang tidak akan dieksekusi atau ditampilkan di tampilan.
-<%- ... %> adalah tag yang digunakan untuk mengeluarkan nilai tanpa melarikan HTML. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk mengeluarkan nilai dari variabel htmlContent.
-<%= ... %> adalah tag yang digunakan untuk mengeluarkan nilai ke tampilan dengan melarikan HTML. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk mengeluarkan nilai dari variabel escapedValue.
-<%% adalah tag yang menghasilkan teks literal <%.
-<% ... %> adalah tag yang digunakan untuk kontrol alur seperti percabangan if-else. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk mengevaluasi kondisi dan menampilkan teks yang sesuai di tampilan.
-<%_ -%> adalah tag yang digunakan untuk menghilangkan spasi putih sebelum atau sesudahnya. Di dalam contoh tersebut, kita menggunakan tag tersebut untuk menghilangkan spasi putih sebelum dan sesudah paragraf yang berikutnya.
-
-============================================
+===============================
