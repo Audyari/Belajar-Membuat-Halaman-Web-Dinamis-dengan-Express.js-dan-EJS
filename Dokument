@@ -1,10 +1,8 @@
-Cara Menggunakan If Di Dalam Ejs
+Cara Menggunakan Perulangan Di Ejs
 
-==========================
+===================================
 
-contoh code : 
-
-index.js 
+index.js :
 
 const express = require("express");
 const app = express();
@@ -16,21 +14,15 @@ app.set("view engine", "ejs");
 const posts = [
   {
     title: "Post 1",
-    author: "John Doe",
-    date: "May 13",
-    reactions: 60,
+    content: "Lorem ipsum dolor sit amet.",
   },
   {
     title: "Post 2",
-    author: "Jane Smith",
-    date: "May 14",
-    reactions: 25,
+    content: "Consectetur adipiscing elit.",
   },
   {
     title: "Post 3",
-    author: "Bob Johnson",
-    date: "May 15",
-    reactions: 10,
+    content: "Praesent nec ligula eget urna eleifend.",
   },
 ];
 
@@ -45,10 +37,9 @@ app.listen(3000, () => {
 });
 
 
-==============================================
+===========================================
 
 index.ejs :
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,81 +51,52 @@ index.ejs :
 </head>
 
 <body>
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="utf-8">
-        <title>Halaman Utama</title>
-    </head>
-    <!-- 
-    <div>
-        <h1>Selamat Datang di Halaman Utama!</h1>
-        <ul>
-            <% posts.forEach(post=> { %>
-                <li>
-                    <h2>
-                        <%= post.title %>
-                    </h2>
-                    <p>
-                        <%= post.content %>
-                    </p>
-                </li>
-                <% }) %>
-        </ul>
-
-    </div> -->
-    <!-- 
     <div>
         <ul>
             <% posts.forEach(post=> { %>
                 <li>
-                    <h2>
-                        <%= post.title %>
-                    </h2>
-                    <p>By <%= post.author %> on <%= post.date %>
-                    </p>
-                    <% if (post.reactions> 10) { %>
-                        <p>This post is popular!</p>
-                        <% } else { %>
-                            <p>This post has fewer reactions.</p>
-                            <% } %>
+                    <%= post.title %>
                 </li>
                 <% }) %>
         </ul>
-    </div> -->
+    </div>
+
+    <hr>
 
     <div>
-
-        <h1>Selamat Datang di Halaman Utama!</h1>
         <ul>
-            <% posts.forEach(post=> { %>
+            <% for (let i=0; i < posts.length; i++) { %>
                 <li>
-                    <h2>
-                        <%= post.title %>
-                    </h2>
-                    <p>By <%= post.author %> on <%= post.date %>
-                    </p>
-                    <% if (post.reactions> 50) { %>
-                        <p>This post is very popular!</p>
-                        <% } else if (post.reactions> 20) { %>
-                            <p>This post is popular!</p>
-                            <% } else { %>
-                                <p>This post has fewer reactions.</p>
-                                <% } %>
+                    <%= posts[i].title %>
                 </li>
-                <% }) %>
+                <% } %>
         </ul>
-
 
     </div>
 
+    <hr>
+
+    <div>
+
+        <ul>
+            <% for (let i=0; i < posts.length; i++) { %>
+                <li>
+                    <h2>
+                        <%= posts[i].title %>
+                    </h2>
+                    <p>
+                        <%= posts[i].content %>
+                    </p>
+                </li>
+                <% } %>
+        </ul>
+    </div>
+
+    <hr>
+
 </body>
 
 </html>
-</body>
-
-</html>
 
 
-=======================================================
+=============================================
